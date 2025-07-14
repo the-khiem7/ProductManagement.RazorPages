@@ -1,20 +1,28 @@
 ﻿
 using BussiessObjects.Entities;
-using Repositories;
 using Services.Interfaces;
+using Repositories.Interfaces;
+using BussiessObjects;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Services.Implements
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryService()
+        private readonly IUnitOfWork<MyStoreContext> _unitOfWork;
+        public CategoryService(IUnitOfWork<MyStoreContext> unitOfWork)
         {
-            _categoryRepository = new CategoryRepository();
+            _unitOfWork = unitOfWork;
         }
-        public List<Category> GetCategories()
+        public async Task<List<Category>> GetCategoriesAsync()
         {
-           return _categoryRepository.GetCategories();
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Category>();
+                var list = await repo.GetListAsync();
+                return new List<Category>(list);
+            });
         }
     }
 }

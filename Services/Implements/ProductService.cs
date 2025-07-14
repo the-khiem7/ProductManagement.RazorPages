@@ -1,41 +1,65 @@
 ﻿
-using Repositories;
 using BussiessObjects.Entities;
 using Services.Interfaces;
+using Repositories.Interfaces;
+using BussiessObjects;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Services.Implements
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository;
-
-        public ProductService()
+        private readonly IUnitOfWork<MyStoreContext> _unitOfWork;
+        public ProductService(IUnitOfWork<MyStoreContext> unitOfWork)
         {
-            _productRepository = new ProductRepository();
+            _unitOfWork = unitOfWork;
         }
-        public void DeleteProduct(Product p)
+        public async Task DeleteProductAsync(Product p)
         {
-            _productRepository.DeleteProduct(p);
+            await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Product>();
+                repo.DeleteAsync(p);
+                await _unitOfWork.CommitAsync();
+            });
         }
-
-        public Product GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return _productRepository.GetProductById(id);
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Product>();
+                // Assuming ProductId is int, not Guid
+                return await repo.SingleOrDefaultAsync(predicate: x => x.ProductId == id);
+            });
         }
-
-        public List<Product> GetProducts()
+        public async Task<List<Product>> GetProductsAsync()
         {
-            return _productRepository.GetProducts();
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Product>();
+                var list = await repo.GetListAsync();
+                return new List<Product>(list);
+            });
         }
-
-        public Product SaveProduct(Product p)
+        public async Task<Product> SaveProductAsync(Product p)
         {
-            return _productRepository.SaveProduct(p);
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Product>();
+                await repo.InsertAsync(p);
+                await _unitOfWork.CommitAsync();
+                return p;
+            });
         }
-
-        public void UpdateProduct(Product p)
+        public async Task UpdateProductAsync(Product p)
         {
-            _productRepository.UpdateProduct(p);
+            await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<Product>();
+                repo.UpdateAsync(p);
+                await _unitOfWork.CommitAsync();
+            });
         }
     }
 }

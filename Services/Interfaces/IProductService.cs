@@ -1,17 +1,16 @@
 ﻿
 using BussiessObjects.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
     public interface IProductService
     {
-        Product SaveProduct(Product p);
-        void DeleteProduct(Product p);
-
-        void UpdateProduct(Product p);
-
-        List<Product> GetProducts();
-
-        Product GetProductById(int id);
+        Task<Product> SaveProductAsync(Product p);
+        Task DeleteProductAsync(Product p);
+        Task UpdateProductAsync(Product p);
+        Task<List<Product>> GetProductsAsync();
+        Task<Product> GetProductByIdAsync(int id);
     }
 }

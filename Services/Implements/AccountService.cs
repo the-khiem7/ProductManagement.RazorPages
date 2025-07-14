@@ -1,26 +1,33 @@
 ﻿using BussiessObjects.Entities;
-using Repositories;
 using Services.Interfaces;
+using Repositories.Interfaces;
+using BussiessObjects;
+using System.Threading.Tasks;
 
 namespace Services.Implements
 {
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository _accountMemberRepository;
-
-        public AccountService()
+        private readonly IUnitOfWork<MyStoreContext> _unitOfWork;
+        public AccountService(IUnitOfWork<MyStoreContext> unitOfWork)
         {
-            _accountMemberRepository = new AccountRepository();
+            _unitOfWork = unitOfWork;
         }
-
-        public AccountMember GetAccountByEmail(string email)
+        public async Task<AccountMember> GetAccountByEmailAsync(string email)
         {
-           return _accountMemberRepository.GetAccountByEmail(email);
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<AccountMember>();
+                return await repo.SingleOrDefaultAsync(predicate: a => a.EmailAddress == email);
+            });
         }
-
-        public AccountMember GetAccountById(string accountID)
+        public async Task<AccountMember> GetAccountByIdAsync(string accountID)
         {
-           return _accountMemberRepository.GetAccountById(accountID);
+            return await _unitOfWork.ProcessInTransactionAsync(async () =>
+            {
+                var repo = _unitOfWork.GetRepository<AccountMember>();
+                return await repo.SingleOrDefaultAsync(predicate: a => a.MemberId == accountID);
+            });
         }
     }
 }

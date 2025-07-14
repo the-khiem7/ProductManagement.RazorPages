@@ -1,10 +1,11 @@
 ﻿using BussiessObjects.Entities;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
     public interface IAccountService
     {
-        AccountMember GetAccountById(string accountID);
-        AccountMember GetAccountByEmail(string email);
+        Task<AccountMember> GetAccountByIdAsync(string accountID);
+        Task<AccountMember> GetAccountByEmailAsync(string email);
     }
 }
