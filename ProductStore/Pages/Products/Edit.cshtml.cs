@@ -35,7 +35,7 @@ namespace ProductStore.Pages.Products
                 return NotFound();
             }
 
-            var product = await Task.Run(() => _context.GetProductById((int)id));
+            var product = await _context.GetProductByIdAsync((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -50,7 +50,7 @@ namespace ProductStore.Pages.Products
                 UnitPrice = product.UnitPrice
             };
 
-            ViewData["CategoryId"] = new SelectList(_categoryService.GetCategories(), "CategoryId", "CategoryName");
+            ViewData["CategoryId"] = new SelectList(await _categoryService.GetCategoriesAsync(), "CategoryId", "CategoryName");
             return Page();
         }
 
@@ -74,11 +74,11 @@ namespace ProductStore.Pages.Products
             };
             try
             {
-                _context.UpdateProduct(newProduct);
+                await _context.UpdateProductAsync(newProduct);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(Product.ProductId))
+                if (!await ProductExists(Product.ProductId))
                 {
                     return NotFound();
                 }
@@ -93,9 +93,9 @@ namespace ProductStore.Pages.Products
         }
 
 
-        private bool ProductExists(int id)
+        private async Task<bool> ProductExists(int id)
         {
-            return (_context.GetProductById(id) == null) ? true : false;
+            return (await _context.GetProductByIdAsync(id)) == null ? true : false;
         }
     }
 

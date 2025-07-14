@@ -40,7 +40,7 @@ namespace ProductStore.Pages
                 return RedirectToPage("/Products/Index");
             }
 
-            var memberAccount = _accountService.GetAccountByEmail(AccountMember.EmailAddress);
+            var memberAccount = await _accountService.GetAccountByEmailAsync(AccountMember.EmailAddress);
 
             if (memberAccount == null)
             {

@@ -32,8 +32,7 @@ namespace ProductStore.Pages.Products
                 return NotFound();
             }
 
-
-            var product = _context.GetProductById((int)id);
+            var product = await _context.GetProductByIdAsync((int)id);
             if (product == null)
             {
                 return NotFound();

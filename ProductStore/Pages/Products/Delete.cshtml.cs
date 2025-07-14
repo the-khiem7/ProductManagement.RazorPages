@@ -32,9 +32,7 @@ namespace ProductStore.Pages.Products
                 return NotFound();
             }
 
-
-            var product = _context.GetProductById((int)id);
-
+            var product = await _context.GetProductByIdAsync((int)id);
 
             if (product == null)
             {
@@ -55,14 +53,12 @@ namespace ProductStore.Pages.Products
                 return NotFound();
             }
 
-
-            var product = _context.GetProductById((int)id);
+            var product = await _context.GetProductByIdAsync((int)id);
             if (product != null)
             {
                 Product = product;
-                _context.DeleteProduct(product);
+                await _context.DeleteProductAsync(product);
             }
-
 
             return RedirectToPage("./Index");
         }

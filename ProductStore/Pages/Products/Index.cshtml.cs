@@ -29,7 +29,7 @@ namespace ProductStore.Pages.Products
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Account")))
             {
-                Product = _contextProduct.GetProducts();
+                Product = await _contextProduct.GetProductsAsync();
                 return Page();
             }
             return RedirectToPage("/Login");

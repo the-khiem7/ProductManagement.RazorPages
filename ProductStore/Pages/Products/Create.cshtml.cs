@@ -26,9 +26,9 @@ namespace ProductStore.Pages.Products
             _hubContext = hubContext;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["CategoryId"] = new SelectList(_contextCategory.GetCategories(), "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategoriesAsync(), "CategoryId", "CategoryId");
             return Page();
         }
 
@@ -49,7 +49,7 @@ namespace ProductStore.Pages.Products
                 UnitsInStock = Product.UnitsInStock,
                 UnitPrice = Product.UnitPrice,
             };
-            _contextProduct.SaveProduct(newProduct);
+            await _contextProduct.SaveProductAsync(newProduct);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
 
             return RedirectToPage("./Index");
