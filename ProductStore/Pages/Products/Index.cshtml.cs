@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BussiessObjects;
 using BussiessObjects.Entities;
-using Services;
+using Services.Interfaces;
 
 namespace ProductStore.Pages.Products
 {

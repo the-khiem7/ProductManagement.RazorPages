@@ -1,7 +1,8 @@
 ﻿using BussiessObjects.Entities;
 using Repositories;
+using Services.Interfaces;
 
-namespace Services
+namespace Services.Implements
 {
     public class AccountService : IAccountService
     {

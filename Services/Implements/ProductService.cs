@@ -1,8 +1,9 @@
 ﻿
 using Repositories;
 using BussiessObjects.Entities;
+using Services.Interfaces;
 
-namespace Services
+namespace Services.Implements
 {
     public class ProductService : IProductService
     {

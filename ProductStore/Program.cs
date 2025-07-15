@@ -1,5 +1,6 @@
 using ProductStore.SignalRLab;
-using Services;
+using Services.Implements;
+using Services.Interfaces;
 
 namespace ProductStore
 {

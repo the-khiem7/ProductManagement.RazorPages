@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussiessObjects;
 using BussiessObjects.Entities;
-using Services;
 using ProductStore.Models;
+using Services.Interfaces;
 
 namespace ProductStore.Pages.Products
 {

@@ -1,7 +1,7 @@
 ﻿
 using BussiessObjects.Entities;
 
-namespace Services
+namespace Services.Interfaces
 {
     public interface IProductService
     {

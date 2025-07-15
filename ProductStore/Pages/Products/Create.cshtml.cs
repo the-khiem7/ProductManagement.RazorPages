@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BussiessObjects;
 using BussiessObjects.Entities;
-using Services;
 using ProductStore.Models;
 using Microsoft.AspNetCore.SignalR;
 using ProductStore.SignalRLab;
+using Services.Interfaces;
 
 namespace ProductStore.Pages.Products
 {
